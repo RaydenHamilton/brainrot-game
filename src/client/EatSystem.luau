@@ -76,30 +76,36 @@ local function stopTouch(part: BasePart, bodyPart: BasePart)
 	end
 end
 
-function EatSystem.init()
-	player.CharacterAdded:Connect(function(char: Model)
-		local humanoid = char:WaitForChild("Humanoid") :: Humanoid
+local function setupCharacter(char)
+	local humanoid = char:WaitForChild("Humanoid") :: Humanoid
 
-		humanoid.Died:Connect(restParts)
+	humanoid.Died:Connect(restParts)
 
-		for _, bodyPart in char:GetChildren() do
-			if not bodyPart:IsA("BasePart") then
-				continue
-			end
-			table.insert(
-				connenctions,
-				bodyPart.Touched:Connect(function(part: BasePart)
-					touched(part, bodyPart)
-				end)
-			)
-
-			table.insert(
-				connenctions,
-				bodyPart.TouchEnded:Connect(function(part: BasePart)
-					stopTouch(part, bodyPart)
-				end)
-			)
+	for _, bodyPart in char:GetChildren() do
+		if not bodyPart:IsA("BasePart") then
+			continue
 		end
+		table.insert(
+			connenctions,
+			bodyPart.Touched:Connect(function(part: BasePart)
+				touched(part, bodyPart)
+			end)
+		)
+
+		table.insert(
+			connenctions,
+			bodyPart.TouchEnded:Connect(function(part: BasePart)
+				stopTouch(part, bodyPart)
+			end)
+		)
+	end
+end
+
+function EatSystem.init()
+	local char = player.Character or player.CharacterAdded:Wait()
+	setupCharacter(char)
+	player.CharacterAdded:Connect(function(char: Model)
+		setupCharacter(char)
 	end)
 end
 return EatSystem

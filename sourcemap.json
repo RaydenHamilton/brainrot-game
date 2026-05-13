@@ -1,1 +1,265 @@
-{"name":"Brain game","className":"DataModel","filePaths":["default.project.json"],"children":[{"name":"ReplicatedStorage","className":"ReplicatedStorage","children":[{"name":"Packages","className":"Folder","children":[{"name":"_Index","className":"Folder","children":[{"name":"ddashdev_profilestore@1.0.4","className":"Folder","children":[{"name":"profilestore","className":"ModuleScript","filePaths":["ServerPackages\\_Index\\ddashdev_profilestore@1.0.4\\profilestore\\ProfileStore.luau","ServerPackages\\_Index\\ddashdev_profilestore@1.0.4\\profilestore\\default.project.json"]}]}]},{"name":"profilestore","className":"ModuleScript","filePaths":["ServerPackages\\profilestore.lua"]}]},{"name":"Shared","className":"Folder","children":[{"name":"Hello","className":"ModuleScript","filePaths":["src/shared\\Hello.luau"]},{"name":"PlayerDataHandler","className":"Folder","children":[{"name":"Implementation","className":"Folder","children":[{"name":"_PlayerDataServerSetup","className":"ModuleScript","filePaths":["src/shared\\PlayerDataHandler\\Implementation\\_PlayerDataServerSetup.luau"]}]},{"name":"SystemPackage","className":"Folder","children":[{"name":"PlayerDataServerService","className":"ModuleScript","filePaths":["src/shared\\PlayerDataHandler\\SystemPackage\\PlayerDataServerService.luau"]}]}]}]}]},{"name":"ServerScriptService","className":"ServerScriptService","children":[{"name":"Server","className":"Script","filePaths":["src/server\\init.server.luau"],"children":[{"name":"SetupPlayer","className":"ModuleScript","filePaths":["src/server\\SetupPlayer.luau"]},{"name":"TileHealth","className":"ModuleScript","filePaths":["src/server\\TileHealth.luau"]}]}]},{"name":"StarterPlayer","className":"StarterPlayer","children":[{"name":"StarterPlayerScripts","className":"StarterPlayerScripts","children":[{"name":"Client","className":"LocalScript","filePaths":["src/client\\init.client.luau"],"children":[{"name":"EatSystem","className":"ModuleScript","filePaths":["src/client\\EatSystem.luau"]},{"name":"GuiAnimations","className":"ModuleScript","filePaths":["src/client\\GuiAnimations.luau"]},{"name":"GuiScripts","className":"Folder","children":[{"name":"ShopGui","className":"ModuleScript","filePaths":["src/client\\GuiScripts\\ShopGui.luau"]},{"name":"Vacuum","className":"ModuleScript","filePaths":["src/client\\GuiScripts\\Vacuum.luau"]},{"name":"FuseMachine","className":"ModuleScript","filePaths":["src/client\\GuiScripts\\FuseMachine.luau"]},{"name":"SellGui","className":"ModuleScript","filePaths":["src/client\\GuiScripts\\SellGui.luau"]},{"name":"GuiButtons","className":"Folder","children":[{"name":"RobuxShop","className":"ModuleScript","filePaths":["src/client\\GuiScripts\\GuiButtons\\RobuxShop.luau"]},{"name":"RebirthGui","className":"ModuleScript","filePaths":["src/client\\GuiScripts\\GuiButtons\\RebirthGui.luau"]},{"name":"SkinsGui","className":"ModuleScript","filePaths":["src/client\\GuiScripts\\GuiButtons\\SkinsGui.luau"]},{"name":"IndexGui","className":"ModuleScript","filePaths":["src/client\\GuiScripts\\GuiButtons\\IndexGui.luau"]}]}]}]}]}]}]}
+{
+  "name": "Brain game",
+  "className": "DataModel",
+  "filePaths": [
+    "default.project.json"
+  ],
+  "children": [
+    {
+      "name": "ReplicatedStorage",
+      "className": "ReplicatedStorage",
+      "children": [
+        {
+          "name": "Packages",
+          "className": "Folder",
+          "children": [
+            {
+              "name": "_Index",
+              "className": "Folder",
+              "children": [
+                {
+                  "name": "ddashdev_profilestore@1.0.4",
+                  "className": "Folder",
+                  "children": [
+                    {
+                      "name": "profilestore",
+                      "className": "ModuleScript",
+                      "filePaths": [
+                        "ServerPackages\\_Index\\ddashdev_profilestore@1.0.4\\profilestore\\ProfileStore.luau",
+                        "ServerPackages\\_Index\\ddashdev_profilestore@1.0.4\\profilestore\\default.project.json"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "profilestore",
+              "className": "ModuleScript",
+              "filePaths": [
+                "ServerPackages\\profilestore.lua"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Shared",
+          "className": "Folder",
+          "children": [
+            {
+              "name": "PlayerDataHandler",
+              "className": "Folder",
+              "children": [
+                {
+                  "name": "Implementation",
+                  "className": "Folder",
+                  "children": [
+                    {
+                      "name": "_PlayerDataServerSetup",
+                      "className": "ModuleScript",
+                      "filePaths": [
+                        "src/shared\\PlayerDataHandler\\Implementation\\_PlayerDataServerSetup.luau"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "SystemPackage",
+                  "className": "Folder",
+                  "children": [
+                    {
+                      "name": "PlayerDataServerService",
+                      "className": "ModuleScript",
+                      "filePaths": [
+                        "src/shared\\PlayerDataHandler\\SystemPackage\\PlayerDataServerService.luau"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Settings",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/shared\\Settings.luau"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ServerScriptService",
+      "className": "ServerScriptService",
+      "children": [
+        {
+          "name": "Server",
+          "className": "Script",
+          "filePaths": [
+            "src/server\\init.server.luau"
+          ],
+          "children": [
+            {
+              "name": "SetupPlayer",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/server\\SetupPlayer.luau"
+              ]
+            },
+            {
+              "name": "TileHealth",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/server\\TileHealth.luau"
+              ]
+            },
+            {
+              "name": "PurchesHandler",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/server\\PurchesHandler.luau"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "StarterPlayer",
+      "className": "StarterPlayer",
+      "children": [
+        {
+          "name": "StarterPlayerScripts",
+          "className": "StarterPlayerScripts",
+          "children": [
+            {
+              "name": "Client",
+              "className": "LocalScript",
+              "filePaths": [
+                "src/client\\init.client.luau"
+              ],
+              "children": [
+                {
+                  "name": "EatSystem",
+                  "className": "ModuleScript",
+                  "filePaths": [
+                    "src/client\\EatSystem.luau"
+                  ]
+                },
+                {
+                  "name": "GuiAnimations",
+                  "className": "ModuleScript",
+                  "filePaths": [
+                    "src/client\\GuiAnimations.luau"
+                  ]
+                },
+                {
+                  "name": "GuiScripts",
+                  "className": "Folder",
+                  "children": [
+                    {
+                      "name": "GuiButtons",
+                      "className": "Folder",
+                      "children": [
+                        {
+                          "name": "IndexGui",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiButtons\\IndexGui.luau"
+                          ]
+                        },
+                        {
+                          "name": "RebirthGui",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiButtons\\RebirthGui.luau"
+                          ]
+                        },
+                        {
+                          "name": "RobuxShop",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiButtons\\RobuxShop.luau"
+                          ]
+                        },
+                        {
+                          "name": "SkinsGui",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiButtons\\SkinsGui.luau"
+                          ]
+                        },
+                        {
+                          "name": "SettingsGui",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiButtons\\SettingsGui.luau"
+                          ]
+                        },
+                        {
+                          "name": "SlowMode",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiButtons\\SlowMode.luau"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "GuiZones",
+                      "className": "Folder",
+                      "children": [
+                        {
+                          "name": "FuseMachine",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiZones\\FuseMachine.luau"
+                          ]
+                        },
+                        {
+                          "name": "SellGui",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiZones\\SellGui.luau"
+                          ]
+                        },
+                        {
+                          "name": "ShopGui",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiZones\\ShopGui.luau"
+                          ]
+                        },
+                        {
+                          "name": "Vacuum",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiZones\\Vacuum.luau"
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "GamePassButtons",
+                      "className": "Folder",
+                      "children": [
+                        {
+                          "name": "Speed",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GamePassButtons\\Speed.luau"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -3,8 +3,6 @@ local _PlayerDataServerSetup = require(ReplicatedStorage.Shared.PlayerDataHandle
 local SetupPlayer = require(script.SetupPlayer)
 local TileHealth = require(script.TileHealth)
 
-_PlayerDataServerSetup.init()
-
 TileHealth.init()
-
+_PlayerDataServerSetup.init()
 SetupPlayer.init()

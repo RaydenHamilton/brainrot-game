@@ -56,7 +56,13 @@ end
 
 local function Popup(frame: Frame)
 	local originalPosition = frame.Position
+	if not frame:GetAttribute("originalPosition") then
+		frame:SetAttribute("originalPosition", originalPosition)
+	else
+		originalPosition = frame:GetAttribute("originalPosition")
+	end
 	frame.Position = UDim2.new(originalPosition.X.Scale, originalPosition.X.Offset, 1.2, 0)
+	task.wait()
 	frame.Visible = true
 	local openTween = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 		Position = originalPosition,
@@ -83,9 +89,9 @@ local function HidePopup(frame: Frame, dontchangeFOV)
 		fov:Play()
 	end
 	tween.Completed:Wait()
+	table.remove(openedFrames, table.find(openedFrames, frame))
 
 	frame.Visible = false
-	frame.Position = originalPosition
 end
 
 local function openShop(part, frame)
@@ -111,7 +117,7 @@ local function closeShop(part, frame)
 	frame.Visible = false
 end
 
-function Shop.newZone(zone: BasePart, frameName: string)
+function Shop.newZone(zone: BasePart, frameName: string): Frame
 	local frame = player:WaitForChild("PlayerGui"):WaitForChild("MainGui").Frames[frameName]
 	zone.Touched:Connect(function(part)
 		openShop(part, frame)
@@ -127,9 +133,10 @@ function Shop.newZone(zone: BasePart, frameName: string)
 			closeShop(true, frame)
 		end)
 	end
+	return frame
 end
 
-function Shop.newButton(buttonName: string, frameName: string)
+function Shop.newButton(buttonName: string, frameName: string): Frame
 	local frame = player:WaitForChild("PlayerGui"):WaitForChild("MainGui").Frames[frameName]
 
 	local button = player:WaitForChild("PlayerGui"):WaitForChild("MainGui"):FindFirstChild(buttonName, 2)
@@ -147,6 +154,7 @@ function Shop.newButton(buttonName: string, frameName: string)
 			closeShop(true, frame)
 		end)
 	end
+	return frame
 end
 
 function Shop.init()

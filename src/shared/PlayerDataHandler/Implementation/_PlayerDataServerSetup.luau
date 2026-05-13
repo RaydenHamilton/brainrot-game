@@ -9,7 +9,7 @@ playerDataServerSetup.__index = playerDataServerSetup
 
 local profileTemplate = {
 	Cash = 0,
-	Speed = 0,
+	Speed = 16,
 	Power = 100,
 	Carry = 1,
 	Invontory = {}, -- {level, name, type}
