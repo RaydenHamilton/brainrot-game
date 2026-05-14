@@ -10,12 +10,13 @@ playerDataServerSetup.__index = playerDataServerSetup
 local profileTemplate = {
 	Cash = 0,
 	Speed = 16,
-	Power = 100,
+	Power = 10,
 	Carry = 1,
 	Invontory = {}, -- {level, name, type}
 	BaseLevel = 10,
 	BaseData = {}, -- {Stand,floor,{level, name, type}}
-	BaseSkin = {},
+	BaseSkins = {},
+	BaseSkin = "Basic Base",
 	Index = {}, -- {name , type},
 	Rebirth = 0,
 	Settings = { Sound = 100, SoundEffects = 100, Popups = false },

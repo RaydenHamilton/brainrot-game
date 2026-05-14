@@ -27,6 +27,18 @@ Settings.Zones = {
 Settings.Power = {
 	Base = 100,
 	Multiplier = 1.0545,
+	Offset = 10,
+}
+
+Settings.Speed = {
+	Base = 100,
+	Multiplier = 1.0545,
+	Offset = 16,
+}
+Settings.Carry = {
+	Base = 100,
+	Multiplier = 1.0545,
+	Offset = 1,
 }
 
 return Settings

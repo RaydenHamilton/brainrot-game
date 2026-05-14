@@ -84,6 +84,13 @@
               "filePaths": [
                 "src/shared\\Settings.luau"
               ]
+            },
+            {
+              "name": "NumberShortener",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/shared\\NumberShortener.luau"
+              ]
             }
           ]
         }
@@ -101,6 +108,13 @@
           ],
           "children": [
             {
+              "name": "PurchesHandler",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/server\\PurchesHandler.luau"
+              ]
+            },
+            {
               "name": "SetupPlayer",
               "className": "ModuleScript",
               "filePaths": [
@@ -115,10 +129,10 @@
               ]
             },
             {
-              "name": "PurchesHandler",
+              "name": "PlotHandler",
               "className": "ModuleScript",
               "filePaths": [
-                "src/server\\PurchesHandler.luau"
+                "src/server\\PlotHandler.luau"
               ]
             }
           ]
@@ -159,6 +173,19 @@
                   "className": "Folder",
                   "children": [
                     {
+                      "name": "GamePassButtons",
+                      "className": "Folder",
+                      "children": [
+                        {
+                          "name": "Speed",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GamePassButtons\\Speed.luau"
+                          ]
+                        }
+                      ]
+                    },
+                    {
                       "name": "GuiButtons",
                       "className": "Folder",
                       "children": [
@@ -184,17 +211,17 @@
                           ]
                         },
                         {
-                          "name": "SkinsGui",
-                          "className": "ModuleScript",
-                          "filePaths": [
-                            "src/client\\GuiScripts\\GuiButtons\\SkinsGui.luau"
-                          ]
-                        },
-                        {
                           "name": "SettingsGui",
                           "className": "ModuleScript",
                           "filePaths": [
                             "src/client\\GuiScripts\\GuiButtons\\SettingsGui.luau"
+                          ]
+                        },
+                        {
+                          "name": "SkinsGui",
+                          "className": "ModuleScript",
+                          "filePaths": [
+                            "src/client\\GuiScripts\\GuiButtons\\SkinsGui.luau"
                           ]
                         },
                         {
@@ -241,16 +268,10 @@
                       ]
                     },
                     {
-                      "name": "GamePassButtons",
-                      "className": "Folder",
-                      "children": [
-                        {
-                          "name": "Speed",
-                          "className": "ModuleScript",
-                          "filePaths": [
-                            "src/client\\GuiScripts\\GamePassButtons\\Speed.luau"
-                          ]
-                        }
+                      "name": "Notifcation",
+                      "className": "ModuleScript",
+                      "filePaths": [
+                        "src/client\\GuiScripts\\Notifcation.luau"
                       ]
                     }
                   ]
