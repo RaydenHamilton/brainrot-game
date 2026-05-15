@@ -47,6 +47,20 @@
           "className": "Folder",
           "children": [
             {
+              "name": "BrainrotData",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/shared\\BrainrotData.luau"
+              ]
+            },
+            {
+              "name": "NumberShortener",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/shared\\NumberShortener.luau"
+              ]
+            },
+            {
               "name": "PlayerDataHandler",
               "className": "Folder",
               "children": [
@@ -84,13 +98,6 @@
               "filePaths": [
                 "src/shared\\Settings.luau"
               ]
-            },
-            {
-              "name": "NumberShortener",
-              "className": "ModuleScript",
-              "filePaths": [
-                "src/shared\\NumberShortener.luau"
-              ]
             }
           ]
         }
@@ -107,6 +114,13 @@
             "src/server\\init.server.luau"
           ],
           "children": [
+            {
+              "name": "PlotHandler",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/server\\PlotHandler.luau"
+              ]
+            },
             {
               "name": "PurchesHandler",
               "className": "ModuleScript",
@@ -129,10 +143,10 @@
               ]
             },
             {
-              "name": "PlotHandler",
+              "name": "Petsystem",
               "className": "ModuleScript",
               "filePaths": [
-                "src/server\\PlotHandler.luau"
+                "src/server\\Petsystem.luau"
               ]
             }
           ]

@@ -81,24 +81,19 @@ local function setupCharacter(char)
 
 	humanoid.Died:Connect(restParts)
 
-	for _, bodyPart in char:GetChildren() do
-		if not bodyPart:IsA("BasePart") then
-			continue
-		end
-		table.insert(
-			connenctions,
-			bodyPart.Touched:Connect(function(part: BasePart)
-				touched(part, bodyPart)
-			end)
-		)
+	table.insert(
+		connenctions,
+		char.HumanoidRootPart.Touched:Connect(function(part: BasePart)
+			touched(part, char.HumanoidRootPart)
+		end)
+	)
 
-		table.insert(
-			connenctions,
-			bodyPart.TouchEnded:Connect(function(part: BasePart)
-				stopTouch(part, bodyPart)
-			end)
-		)
-	end
+	table.insert(
+		connenctions,
+		char.HumanoidRootPart.TouchEnded:Connect(function(part: BasePart)
+			stopTouch(part, char.HumanoidRootPart)
+		end)
+	)
 end
 
 function EatSystem.init()
