@@ -76,21 +76,45 @@ local function stopTouch(part: BasePart, bodyPart: BasePart)
 	end
 end
 
+local function weldTo(brainrotRoot, rootpart)
+	local weld = Instance.new("WeldConstraint")
+	weld.Part0 = brainrotRoot
+	weld.Part1 = rootpart
+	weld.Parent = brainrotRoot
+end
+
+local function createEatPart(character)
+	local EatPart = Instance.new("Part")
+	EatPart.Size = Vector3.new(1, 1, 1)
+	EatPart.CanCollide = false
+	EatPart.Anchored = false
+	EatPart.CanQuery = false
+	EatPart.Massless = true
+	EatPart.Transparency = 1
+	EatPart.Parent = character
+
+	local root = character.HumanoidRootPart :: Part
+	EatPart.CFrame = root.CFrame * CFrame.new(0, 0, -EatPart.Size.Z / 2 - 2)
+	weldTo(root, EatPart)
+	return EatPart
+end
+
 local function setupCharacter(char)
 	local humanoid = char:WaitForChild("Humanoid") :: Humanoid
 
+	local eatPart = createEatPart(char)
 	humanoid.Died:Connect(restParts)
 
 	table.insert(
 		connenctions,
-		char.HumanoidRootPart.Touched:Connect(function(part: BasePart)
+		eatPart.Touched:Connect(function(part: BasePart)
 			touched(part, char.HumanoidRootPart)
 		end)
 	)
 
 	table.insert(
 		connenctions,
-		char.HumanoidRootPart.TouchEnded:Connect(function(part: BasePart)
+		eatPart.TouchEnded:Connect(function(part: BasePart)
 			stopTouch(part, char.HumanoidRootPart)
 		end)
 	)

@@ -17,6 +17,7 @@ PlotHandler.init()
 -- testing
 Players.PlayerAdded:Connect(function(player: Player)
 	player.characterAdded:Connect(function()
-		Petsystem.pickupPet(player, "67", 1, "Golden", "Common")
+		Petsystem.givePet(player, "67", 1, "Golden", "Common")
+		Petsystem.givePet(player, "67", 1, "Golden", "Common")
 	end)
 end)
