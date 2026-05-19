@@ -1,13 +1,27 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local ServerStorage = game:GetService("ServerStorage")
 local Workspace = game:GetService("Workspace")
+local AnimateCash = require(ReplicatedStorage.Shared.AnimateCash)
+local BrainrotData = require(ReplicatedStorage.Shared.BrainrotData)
+local NumberShortener = require(ReplicatedStorage.Shared.NumberShortener)
 local Petsystem = require(script.Parent.Petsystem)
 local PlayerDataServerService =
 	require(ReplicatedStorage.Shared.PlayerDataHandler.SystemPackage.PlayerDataServerService)
+
 local Plot = {}
 
 local assets = ReplicatedStorage.Assets.PlotAssets
+
+local function getCashRate(petData): number
+	return math.round(
+		BrainrotData[petData.Name].Cash * BrainrotData.Mutation[petData.Mutation].Multiplier * 1.15 ^ petData.Level
+	)
+end
+
+local function getStandTemplate(child)
+	local standTemplate = child:FindFirstAncestor("Stand")
+	return standTemplate.Parent
+end
 
 local function spawnAssest(assest, spawnPart, plot)
 	local model = assest:Clone()
@@ -24,13 +38,12 @@ function Plot.rest(plot: Model, index: number)
 	newPlot:SetAttribute("Plot", index)
 end
 
-local function newPrompt(newStand, text)
-	local attachment = newStand:FindFirstChild("ProximityAttachment", true)
-	local place = Instance.new("ProximityPrompt")
-	place.ActionText = text
-	place.Parent = attachment
-
-	return place
+local function newPrompt(standTemplate)
+	local attachment = standTemplate:FindFirstChild("ProximityAttachment", true)
+	local prox = Instance.new("ProximityPrompt")
+	prox.ActionText = "Place"
+	prox.Parent = attachment
+	return prox
 end
 
 local function isOwner(player: Player, childofPlot: Instance)
@@ -41,104 +54,225 @@ local function isOwner(player: Player, childofPlot: Instance)
 	return false
 end
 
-local function PlacePet(player: Player, stand: Model)
-	local char = player.Character or player.CharacterAdded:Wait()
-	local pet = char:FindFirstChildOfClass("Tool")
+local function getPetFromStand(stand: Model): Model?
+	return stand:FindFirstChild("Diamond") :: Model?
+		or stand:FindFirstChild("Easter") :: Model?
+		or stand:FindFirstChild("Galaxy") :: Model?
+		or stand:FindFirstChild("Golden") :: Model?
+		or stand:FindFirstChild("Lava") :: Model?
+		or stand:FindFirstChild("Normal") :: Model?
+		or stand:FindFirstChild("Rainbow") :: Model?
+end
+
+local function getPetUpgradePrice(petData): number
+	local mulitplier = BrainrotData.Mutation[petData.Mutation].Multiplier
+	local baseprice = BrainrotData[petData.Name].Cash
+
+	if petData.Level == 0 then
+		return 0
+	end
+	return math.round(baseprice * mulitplier * 1.28 * 1.25 ^ petData.Level)
+end
+
+local function GetAttributes(pet): {}
+	return {
+		Level = pet:GetAttribute("Level"),
+		Name = pet:GetAttribute("Name"),
+		Mutation = pet:GetAttribute("Mutation"),
+	}
+end
+
+local function updatalabel(standTemplate: Model)
+	local pet = getPetFromStand(standTemplate)
 	if not pet then
 		return
 	end
+	local petData = GetAttributes(pet)
 
-	local name = pet:GetAttribute("Name")
-	local level = pet:GetAttribute("Level")
-	local mutation = pet:GetAttribute("Mutation")
+	local upgradeGui = standTemplate:FindFirstChild("SurfaceGui", true) :: SurfaceGui
 
-	local newPet = Petsystem.createBrainrot(name, mutation, stand)
-	newPet.PrimaryPart.Anchored = true
-	newPet:SetAttribute("Name", name)
-	newPet:SetAttribute("Level", level)
-	newPet:SetAttribute("Mutation", mutation)
-	pet:Destroy()
+	local currentLevel = upgradeGui:FindFirstChild("CurrentUpgrade", true)
+	local currentPrice = upgradeGui:FindFirstChild("Price", true)
+	local cost = getPetUpgradePrice(petData)
 
-	newPet:PivotTo(
-		stand.Stand.Main.CFrame
-			* CFrame.fromOrientation(0, math.rad(180), 0)
-			* CFrame.new(0, newPet.PrimaryPart.Size.Y / 2, 0)
+	if cost == 0 then
+		currentPrice.Text = `Free!`
+	else
+		currentPrice.Text = `${NumberShortener.Number(cost)}`
+	end
+	currentLevel.Text = `Lvl {petData.Level} > lvl {petData.Level + 1}`
+
+	pet:FindFirstChild("CashLabel", true).Text = `${NumberShortener.Number(getCashRate(petData))}/s`
+
+	local scale = 0.4 + petData.Level * 0.1
+	if scale > 1.1 then
+		scale = 1.1
+	end
+
+	pet:ScaleTo(scale)
+
+	local standRoot = standTemplate:FindFirstChild("Main", true)
+	pet:PivotTo(
+		standRoot.CFrame * CFrame.fromOrientation(0, math.rad(180), 0) * CFrame.new(0, pet.PrimaryPart.Size.Y / 2, 0)
 	)
 end
-local function PickupPet(player: Player, stand: Model)
-	local s = stand.Parent
-	local pet = s:FindFirstChild("Diamond")
-		or s:FindFirstChild("Easter")
-		or s:FindFirstChild("Galaxy")
-		or s:FindFirstChild("Golden")
-		or s:FindFirstChild("Lava")
-		or s:FindFirstChild("Normal")
-		or s:FindFirstChild("Rainbow")
+
+local function PlacePet(player: Player, standTemplate: Model)
+	local char = player.Character or player.CharacterAdded:Wait()
+	local pet = char:FindFirstChildOfClass("Tool")
 	if not pet then
 		return
 	end
 
-	local name = pet:GetAttribute("Name")
-	local level = pet:GetAttribute("Level")
-	local mutation = pet:GetAttribute("Mutation")
+	local petData = GetAttributes(pet)
 
-	Petsystem.givePet(player, name, level, mutation)
+	local newPet = Petsystem.createBrainrot(petData.Name, petData.Mutation, standTemplate)
+	newPet.PrimaryPart.Anchored = true
+
+	newPet:SetAttribute("Name", petData.Name)
+	newPet:SetAttribute("Level", petData.Level)
+	newPet:SetAttribute("Mutation", petData.Mutation)
+	pet:Destroy()
+	local stand = standTemplate:FindFirstChild("Stand")
+	local standRoot = stand:FindFirstChild("Main")
+
+	newPet:PivotTo(
+		standRoot.CFrame * CFrame.fromOrientation(0, math.rad(180), 0) * CFrame.new(0, newPet.PrimaryPart.Size.Y / 2, 0)
+	)
+	updatalabel(standTemplate)
+end
+
+local function PickupPet(player: Player, standTemplate: Model)
+	local pet = getPetFromStand(standTemplate)
+	if not pet then
+		return
+	end
+
+	local petData = GetAttributes(pet)
+
+	Petsystem.givePet(player, petData.Name, petData.Level, petData.Mutation)
 
 	pet:Destroy()
 end
 
-local function getPetUpgradePrice()
-	-- (base price * 1.39) * 1.15 * (level - 1)
-	
-end
-
-local function updatalabel() 
-
-end
-
-local function UpgradePet(player: Player, stand: Model)
-	local pet = stand:FindFirstChild("Diamond")
-		or stand:FindFirstChild("Easter")
-		or stand:FindFirstChild("Galaxy")
-		or stand:FindFirstChild("Golden")
-		or stand:FindFirstChild("Lava")
-		or stand:FindFirstChild("Normal")
-		or stand:FindFirstChild("Rainbow")
+local function UpgradePet(player: Player, standTemplate: Model)
+	local pet = getPetFromStand(standTemplate)
+	local petData = GetAttributes(pet)
 	local cash = PlayerDataServerService.get(player, "Cash")
-	-- (base price * 1.39) * 1.15 * (level - 1)
+
+	local cost = getPetUpgradePrice(petData)
+
+	if cash >= cost then
+		pet:SetAttribute("Level", petData.Level + 1)
+		updatalabel(standTemplate)
+	end
 end
 
-local function placePetProx(promp: ProximityPrompt, player: Player)
+local function collectCash(player: Player, cashModel: Model)
+	if not isOwner(player, cashModel) then
+		return
+	end
+
+	local collectionPart = cashModel:FindFirstChild("TouchPart", true) :: BasePart
+
+	if collectionPart:GetAttribute("Hit") then
+		return
+	end
+
+	collectionPart:SetAttribute("Hit", true)
+	collectionPart.Color = Color3.fromRGB(196, 40, 28)
+	collectionPart.Position -= Vector3.new(0, collectionPart.Size.Y, 0)
+	local cash = collectionPart:GetAttribute("Cash")
+	if cash then
+		collectionPart:SetAttribute("Cash", 0)
+		PlayerDataServerService.add(player, "Cash", cash)
+	end
+
+	AnimateCash.new(collectionPart.CashBillboard.CashLabel, 0, cash or 0, true)
+	task.wait(1)
+	collectionPart:SetAttribute("Hit", nil)
+	collectionPart.Position += Vector3.new(0, collectionPart.Size.Y, 0)
+end
+
+local function placePetProx(prox: ProximityPrompt, player: Player)
 	local char = player.Character or player.CharacterAdded:Wait()
 	local pet = char:FindFirstChildOfClass("Tool")
-	if pet then
-		promp.ActionText = "Pickup/Swap"
-		local upgradeButton = promp:FindFirstAncestor("Stand").Parent.UpgradeButton
-		local upgradeGui = upgradeButton.SurfaceGui :: SurfaceGui
-		upgradeGui.Enabled = true
-		PlacePet(player, promp:FindFirstAncestor("Stand").Parent)
+	if not pet then
+		return
 	end
+	local standTemplate = getStandTemplate(prox)
+	local upgradeButton = standTemplate.UpgradeButton
+	local upgradeGui = upgradeButton.SurfaceGui :: SurfaceGui
+	local cashModel = upgradeButton.parent.CashModel
+	local collectButton = cashModel.TouchPart
+
+	prox.ActionText = "Pickup/Swap"
+	upgradeGui.Enabled = true
+	collectButton.CashBillboard.Enabled = true
+	PlacePet(player, standTemplate)
 end
 
 local function PickupSwapProx(prox: ProximityPrompt, player: Player)
-	prox.ActionText = "Place"
-	local upgradeButton = prox:FindFirstAncestor("Stand").Parent.UpgradeButton
+	local standTemplate = getStandTemplate(prox)
+	local upgradeButton = standTemplate.UpgradeButton
 	local upgradeGui = upgradeButton.SurfaceGui :: SurfaceGui
+
+	local cashModel = upgradeButton.parent.CashModel
+	local collectButton = cashModel.TouchPart
+
+	prox.ActionText = "Place"
 	upgradeGui.Enabled = false
+	collectButton.CashBillboard.Enabled = false
+
+	task.spawn(function()
+		collectCash(player, cashModel)
+	end)
 
 	local char = player.Character or player.CharacterAdded:Wait()
 	local pet = char:FindFirstChildOfClass("Tool")
-	PickupPet(player, prox:FindFirstAncestor("Stand"))
+	PickupPet(player, standTemplate)
+
 	if pet then
 		placePetProx(prox, player)
 	end
+end
+
+local function newStand(index, floorFolder)
+	local standTemplate: Model = assets.StandTemplate:Clone()
+	standTemplate.Name = tostring(index)
+	standTemplate.Parent = floorFolder.Stands
+	standTemplate:PivotTo(floorFolder.StandSpawns[index].CFrame)
+
+	local placeProx = newPrompt(standTemplate)
+
+	local upgradeButton = getStandTemplate(placeProx).UpgradeButton
+	local upgradeButtonclickDector = upgradeButton.ClickDetector :: ClickDetector
+
+	upgradeButtonclickDector.MouseClick:Connect(function(plr)
+		if not isOwner(plr, standTemplate) then
+			return
+		end
+		UpgradePet(plr, standTemplate)
+	end)
+
+	placeProx.Triggered:Connect(function(plr)
+		if not isOwner(plr, placeProx) then
+			return
+		end
+
+		if placeProx.ActionText == "Place" then
+			placePetProx(placeProx, plr)
+		else
+			PickupSwapProx(placeProx, plr)
+		end
+	end)
 end
 
 local function loadPlotFromPlotData(player: Player, plot: Model)
 	local baselevel = PlayerDataServerService.get(player, "BaseLevel")
 	local baseSkin = PlayerDataServerService.get(player, "BaseSkin")
 
-	local upgradeText = plot.BaseUpgrade:FindFirstChild("CurrentUpgrade", true) :: TextLabel
+	local upgradeText = plot:FindFirstChild("CurrentUpgrade", true) :: TextLabel
 	upgradeText.Text = `{baselevel}/50`
 
 	local floors = math.floor((baselevel - 1) / 10)
@@ -148,37 +282,13 @@ local function loadPlotFromPlotData(player: Player, plot: Model)
 		local floor: Model = ReplicatedStorage.BaseSkins[baseSkin][`Floor{i}`]:Clone()
 		local floorFolder = plot:FindFirstChild(floor.Name, true)
 		floor.Parent = floorFolder
-		floor:PivotTo(floor.Parent.FloorSpawn.CFrame)
+		floor:PivotTo(floorFolder.FloorSpawn.CFrame)
 		for index = 1, count do
 			if index > 10 then
 				count -= 10
 				break
 			end
-			local newStand: Model = assets.StandTemplate:Clone()
-			newStand.Name = tostring(index)
-			newStand.Parent = floorFolder.Stands
-			newStand:PivotTo(floorFolder.StandSpawns[index].CFrame)
-
-			local placeProx = newPrompt(newStand, "Place")
-
-			local upgradeButton = placeProx:FindFirstAncestor("Stand").Parent.UpgradeButton
-			local upgradeButtonclickDector = upgradeButton.ClickDetector :: ClickDetector
-
-			upgradeButtonclickDector.MouseClick:Connect(function(plr)
-				if isOwner(plr, newStand) then
-					UpgradePet(plr, newStand)
-				end
-			end)
-
-			placeProx.Triggered:Connect(function(plr)
-				if isOwner(plr, placeProx) then
-					if placeProx.ActionText == "Place" then
-						placePetProx(placeProx, plr)
-					else
-						PickupSwapProx(placeProx, plr)
-					end
-				end
-			end)
+			newStand(index, floorFolder)
 		end
 	end
 end
@@ -206,6 +316,7 @@ function Plot.new(plot: Model, index: number, player: Player)
 
 	playericon.ImageLabel.Image = content
 	playericon.TextLabel.Text = player.Name
+
 	loadPlotFromPlotData(player, newPlot)
 end
 
@@ -231,26 +342,6 @@ local function removePlot(player)
 	end
 end
 
-local function collectCash(player: Player, cashModel: Model)
-	if isOwner(player, cashModel) then
-		local collectionPart = cashModel:FindFirstChild("TouchPart", true) :: BasePart
-		if not collectionPart:GetAttribute("Hit") then
-			collectionPart:SetAttribute("Hit", true)
-			collectionPart.Color = Color3.fromRGB(196, 40, 28)
-			collectionPart.Position = collectionPart.Position - Vector3.new(0, collectionPart.Size.Y, 0)
-			local cash = collectionPart:GetAttribute("Cash")
-			if cash then
-				collectionPart:SetAttribute("Cash", 0)
-				PlayerDataServerService.add(player, "Cash", cash)
-			end
-			task.wait(1)
-			collectionPart:SetAttribute("Hit", nil)
-			collectionPart.Position = collectionPart.Position + Vector3.new(0, collectionPart.Size.Y, 0)
-			collectionPart.Color = Color3.fromRGB(101, 143, 99)
-		end
-	end
-end
-
 local function characterAdded(char)
 	local player = Players:GetPlayerFromCharacter(char)
 	char.HumanoidRootPart.Touched:Connect(function(hitPart)
@@ -264,12 +355,41 @@ end
 local function playerAdded(player)
 	findPlot(player)
 
-	local char = player.Character
-	if char then
-		characterAdded(char)
+	local character = player.Character
+	if character then
+		characterAdded(character)
 	end
 	player.CharacterAdded:Connect(function(char: Model)
 		characterAdded(char)
+	end)
+end
+
+local function updateCash()
+	task.spawn(function()
+		while task.wait(1) do
+			pcall(function()
+				for _, template in Workspace.Plots:GetChildren() do
+					for _, floor in template.Floors:GetChildren() do
+						for _, stand in floor.Stands:GetChildren() do
+							local pet: Model? = getPetFromStand(stand)
+							if not pet then
+								continue
+							end
+							local petData = GetAttributes(pet)
+							local cash = stand.CashModel.TouchPart:GetAttribute("Cash") or 0
+							local newCash = cash + getCashRate(petData)
+
+							local touchPart = stand.CashModel.TouchPart
+
+							task.spawn(function()
+								AnimateCash.new(touchPart.CashBillboard.CashLabel, newCash, cash, true)
+							end)
+							touchPart:SetAttribute("Cash", newCash)
+						end
+					end
+				end
+			end)
+		end
 	end)
 end
 
@@ -277,8 +397,12 @@ function Plot.init()
 	for index, plot in Workspace.Plots:GetChildren() do
 		Plot.rest(plot, index)
 	end
+	for _, player in Players:GetChildren() do
+		playerAdded(player)
+	end
 	Players.playerAdded:Connect(playerAdded)
 	Players.PlayerRemoving:Connect(removePlot)
+	updateCash()
 end
 
 return Plot

@@ -5,9 +5,11 @@ local PlayerDataServerService =
 local Settings = require(ReplicatedStorage.Shared.Settings)
 local perchesHandler = {}
 
-local purchesType = {}
+local function GetTotalCost(ProductName, startLevel, amount)
+	local startCost = Settings[ProductName].Base
+	local multiplier = Settings[ProductName].Multiplier
+	local offset = Settings[ProductName].Offset
 
-local function GetTotalCost(startCost, multiplier, startLevel, amount, offset)
 	local total = 0
 
 	local endLevel = startLevel + amount
@@ -26,13 +28,9 @@ local function purches(
 	getCost: boolean
 ): { cost: number?, amount: number?, message: string?, success: boolean? }
 	local playerProductAmount = PlayerDataServerService.get(player, ProductName)
-	local cost = GetTotalCost(
-		Settings[ProductName].Base,
-		Settings[ProductName].Multiplier,
-		playerProductAmount + 1,
-		amount,
-		Settings[ProductName].Offset
-	)
+
+	local cost = GetTotalCost(ProductName, playerProductAmount + 1, amount)
+
 	if getCost then
 		return { cost = cost, amount = playerProductAmount }
 	end
@@ -41,13 +39,14 @@ local function purches(
 	if cost <= playerCash then
 		playerCash -= cost
 		PlayerDataServerService.set(player, "Cash", playerCash)
-		PlayerDataServerService.set(player, ProductName, playerProductAmount + amount)
+		local newAmount = playerProductAmount + amount
+		PlayerDataServerService.set(player, ProductName, newAmount)
 		SetupPlayer[ProductName](player)
 	else
 		return { success = false, message = "Not Enough Money" }
 	end
 
-	cost = GetTotalCost(Settings[ProductName].Base, Settings[ProductName].Multiplier, playerProductAmount + 11, amount)
+	cost = GetTotalCost(ProductName, playerProductAmount + 11, amount)
 
 	return { success = true, cost = cost, amount = playerProductAmount + amount }
 end

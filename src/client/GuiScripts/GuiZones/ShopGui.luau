@@ -38,6 +38,7 @@ end
 local function buyButton(tab: { frame: Frame, name: string, amount: number })
 	local ragButton = tab.frame:WaitForChild(`RegularPurchaseButton`) :: GuiButton
 	ragButton.Activated:Connect(function(a0: InputObject, a1: number)
+		print(tab.name, tab.amount)
 		local data = purchesRemoteFunction:InvokeServer(tab.name, tab.amount)
 
 		if data.success then

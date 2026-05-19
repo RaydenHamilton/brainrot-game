@@ -47,6 +47,13 @@
           "className": "Folder",
           "children": [
             {
+              "name": "AnimateCash",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/shared\\AnimateCash.luau"
+              ]
+            },
+            {
               "name": "BrainrotData",
               "className": "ModuleScript",
               "filePaths": [
@@ -115,6 +122,13 @@
           ],
           "children": [
             {
+              "name": "Petsystem",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/server\\Petsystem.luau"
+              ]
+            },
+            {
               "name": "PlotHandler",
               "className": "ModuleScript",
               "filePaths": [
@@ -140,13 +154,6 @@
               "className": "ModuleScript",
               "filePaths": [
                 "src/server\\TileHealth.luau"
-              ]
-            },
-            {
-              "name": "Petsystem",
-              "className": "ModuleScript",
-              "filePaths": [
-                "src/server\\Petsystem.luau"
               ]
             }
           ]
