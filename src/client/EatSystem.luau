@@ -59,7 +59,7 @@ local function touched(part: BasePart, bodyPart: BasePart)
 			tile.SelectionBox.Visible = false
 			return
 		end
-		task.wait(0.1)
+		task.wait(0.01)
 	end
 end
 
@@ -102,6 +102,7 @@ end
 local function setupCharacter(char)
 	local humanoid = char:WaitForChild("Humanoid") :: Humanoid
 
+	humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
 	local eatPart = createEatPart(char)
 	humanoid.Died:Connect(restParts)
 

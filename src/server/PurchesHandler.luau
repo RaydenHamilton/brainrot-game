@@ -32,7 +32,7 @@ local function purches(
 	local cost = GetTotalCost(ProductName, playerProductAmount + 1, amount)
 
 	if getCost then
-		return { cost = cost, amount = playerProductAmount }
+		return { cost = math.round(cost), amount = playerProductAmount }
 	end
 
 	local playerCash = PlayerDataServerService.get(player, "Cash")

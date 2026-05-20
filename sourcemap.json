@@ -155,6 +155,20 @@
               "filePaths": [
                 "src/server\\TileHealth.luau"
               ]
+            },
+            {
+              "name": "BrainrotSpawner",
+              "className": "Script",
+              "filePaths": [
+                "src/server\\BrainrotSpawner.server.luau"
+              ]
+            },
+            {
+              "name": "CollectBrainrot",
+              "className": "Script",
+              "filePaths": [
+                "src/server\\CollectBrainrot.server.luau"
+              ]
             }
           ]
         }
@@ -295,6 +309,20 @@
                         "src/client\\GuiScripts\\Notifcation.luau"
                       ]
                     }
+                  ]
+                },
+                {
+                  "name": "UpdradeBase",
+                  "className": "LocalScript",
+                  "filePaths": [
+                    "src/client\\UpdradeBase.client.luau"
+                  ]
+                },
+                {
+                  "name": "UpgradePet",
+                  "className": "LocalScript",
+                  "filePaths": [
+                    "src/client\\UpgradePet.client.luau"
                   ]
                 }
               ]

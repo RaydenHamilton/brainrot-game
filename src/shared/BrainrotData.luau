@@ -36,7 +36,16 @@ Data.Mutation = {
 		}),
 		Multiplier = 1,
 	},
+
+	["Diamond"] = {
+		Gradient = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, Color3.new(0.25098, 0.364706, 1)),
+			ColorSequenceKeypoint.new(1, Color3.new(0.635294, 0.478431, 1)),
+		}),
+		Multiplier = 1,
+	},
 }
+Data.MutationChance = { Normal = 1, Lava = 1, Golden = 1, Galaxy = 1, Easter = 1, Diamond = 1 }
 Data.Rarity = {
 	Common = { Color = Color3.new(0.792157, 0.792157, 0.792157) },
 	Rare = { Color = Color3.new(0.066667, 0.541176, 0.92549) },

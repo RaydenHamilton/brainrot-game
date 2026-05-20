@@ -22,11 +22,12 @@ local function createLabel(brainrotRoot: BasePart, petName: string, mutation: st
 end
 function PetSystem.createBrainrot(petName: string, mutation: string, parent: Instance)
 	local brainrots = ServerStorage.Brainrots
-	local brainrot: Model = brainrots[petName][mutation]:Clone()
+
+	local rarity = BrainrotData[petName].Rarity
+	local brainrot: Model = brainrots[rarity][petName][mutation]:Clone()
 	local brainrotRoot = brainrot.PrimaryPart
 	brainrot.Parent = parent
 	if parent:IsA("BasePart") then
-		print(parent)
 		brainrot:PivotTo(parent.CFrame * CFrame.new(0, 3, -1))
 	end
 	brainrotRoot.Anchored = false
@@ -57,6 +58,14 @@ function PetSystem.givePet(player: Player, petName, level: number, mutation: str
 	tool.Parent = player.Backpack
 end
 
+local function customSequence(x: number): number
+	if x % 2 == 0 then
+		return math.floor(x / 2)
+	else
+		return -math.floor((x - 1) / 2)
+	end
+end
+
 function PetSystem.pickupPet(player: Player, petName: string, level: number, mutation: string)
 	local character = player.Character
 	if not character then
@@ -65,6 +74,14 @@ function PetSystem.pickupPet(player: Player, petName: string, level: number, mut
 
 	local rootpart = character.HumanoidRootPart
 	local brainrot = PetSystem.createBrainrot(petName, mutation, rootpart)
+	local petCount = 0
+	for i, pet in rootpart:GetChildren() do
+		if pet:IsA("Model") then
+			petCount += 1
+		end
+	end
+
+	brainrot:PivotTo(brainrot:GetPivot() * CFrame.new(customSequence(petCount) * 6, 0, 0))
 
 	brainrot:SetAttribute("Level", level)
 	brainrot:SetAttribute("Name", petName)
