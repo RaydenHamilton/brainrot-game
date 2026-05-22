@@ -239,6 +239,10 @@ local function placePetProx(prox: ProximityPrompt, player: Player)
 		return
 	end
 	PlacePet(player, standTemplate, petData)
+
+	local inventory = PlayerDataServerService.get(player, "Inventory")
+	table.remove(inventory, table.find(inventory, { petData.Name, petData.Level, petData.Mutation }))
+	PlayerDataServerService.set(player, "Inventory", inventory)
 end
 
 local function PickupSwapProx(prox: ProximityPrompt, player: Player)
@@ -354,7 +358,7 @@ local function loadBrainrots(player: Player, plot)
 			local standTemplate = plot.Floors[floorName].Stands[standName]
 			PlacePet(player, standTemplate, petData)
 			local collectButton = standTemplate:FindFirstChild("TouchPart", true)
-			standTemplate:FindFirstChildof("ProximityPrompt").ActionText = "Pickup/Swap"
+			standTemplate:FindFirstChild("ProximityPrompt", true).ActionText = "Pickup/Swap"
 			collectButton.CashBillboard.Enabled = true
 		end
 	end
@@ -366,8 +370,6 @@ local function loadPlotFromPlotData(player: Player, plot: Model)
 
 	updateSign(plot, baselevel)
 	updatePlot(plot, baseSkin, baselevel)
-	task.wait(5)
-	loadBrainrots(player, plot)
 end
 
 function Plot.new(plot: Model, index: number, player: Player)
@@ -485,6 +487,7 @@ function Plot.init()
 
 	ReplicatedStorage.Remotes.UpgradeBase.OnServerInvoke = upgradeBase
 	ReplicatedStorage.Remotes.UpgradePet.OnServerInvoke = UpgradePet
+	ReplicatedStorage.Remotes.PlayerLoaded.OnServerEvent:Connect(loadBrainrots)
 end
 
 return Plot

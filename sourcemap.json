@@ -105,6 +105,13 @@
               "filePaths": [
                 "src/shared\\Settings.luau"
               ]
+            },
+            {
+              "name": "Cost",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/shared\\Cost.luau"
+              ]
             }
           ]
         }
@@ -121,6 +128,20 @@
             "src/server\\init.server.luau"
           ],
           "children": [
+            {
+              "name": "BrainrotSpawner",
+              "className": "Script",
+              "filePaths": [
+                "src/server\\BrainrotSpawner.server.luau"
+              ]
+            },
+            {
+              "name": "CollectBrainrot",
+              "className": "Script",
+              "filePaths": [
+                "src/server\\CollectBrainrot.server.luau"
+              ]
+            },
             {
               "name": "Petsystem",
               "className": "ModuleScript",
@@ -154,20 +175,6 @@
               "className": "ModuleScript",
               "filePaths": [
                 "src/server\\TileHealth.luau"
-              ]
-            },
-            {
-              "name": "BrainrotSpawner",
-              "className": "Script",
-              "filePaths": [
-                "src/server\\BrainrotSpawner.server.luau"
-              ]
-            },
-            {
-              "name": "CollectBrainrot",
-              "className": "Script",
-              "filePaths": [
-                "src/server\\CollectBrainrot.server.luau"
               ]
             }
           ]
@@ -323,6 +330,13 @@
                   "className": "LocalScript",
                   "filePaths": [
                     "src/client\\UpgradePet.client.luau"
+                  ]
+                },
+                {
+                  "name": "PlayerIsLoaded",
+                  "className": "LocalScript",
+                  "filePaths": [
+                    "src/client\\PlayerIsLoaded.client.luau"
                   ]
                 }
               ]

@@ -6,14 +6,19 @@ local function characterAdded(character: Model, player: Player)
 	character:SetAttribute("Carrying", 0)
 	root.Touched:Connect(function(hitPart: BasePart)
 		if hitPart and hitPart.Name == "ClaimArea" then
-			while root:FindFirstChildOfClass("Model") do
-				local brainrot = root:FindFirstChildOfClass("Model")
-				local name = brainrot:GetAttribute("Name")
-				local level = brainrot:GetAttribute("Level")
-				local mutation = brainrot:GetAttribute("Mutation")
+			local carryingPet = root:FindFirstChildOfClass("Model")
+
+			while carryingPet do
+				local name = carryingPet:GetAttribute("Name")
+				local level = carryingPet:GetAttribute("Level")
+				local mutation = carryingPet:GetAttribute("Mutation")
+
+				carryingPet:Destroy()
 				Petsystem.givePet(player, name, level, mutation)
-				brainrot:Destroy()
+
+				carryingPet = root:FindFirstChildOfClass("Model")
 			end
+
 			character:SetAttribute("Carrying", 0)
 		end
 	end)

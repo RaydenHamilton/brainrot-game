@@ -1,6 +1,4 @@
-local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Petsystem = require(script.Petsystem)
 local PlotHandler = require(script.PlotHandler)
 local PurchesHandler = require(script.PurchesHandler)
 local _PlayerDataServerSetup = require(ReplicatedStorage.Shared.PlayerDataHandler.Implementation._PlayerDataServerSetup)
@@ -13,11 +11,3 @@ SetupPlayer.init()
 
 PurchesHandler.init()
 PlotHandler.init()
-
--- testing
-Players.PlayerAdded:Connect(function(player: Player)
-	player.characterAdded:Connect(function()
-		Petsystem.givePet(player, "67", 0, "Golden")
-		Petsystem.givePet(player, "67", 0, "Golden")
-	end)
-end)

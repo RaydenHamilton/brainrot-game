@@ -1,6 +1,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 local BrainrotData = require(ReplicatedStorage.Shared.BrainrotData)
+local PlayerDataServerService =
+	require(ReplicatedStorage.Shared.PlayerDataHandler.SystemPackage.PlayerDataServerService)
 local PetSystem = {}
 
 local function createLabel(brainrotRoot: BasePart, petName: string, mutation: string)
@@ -43,7 +45,7 @@ local function weldTo(brainrotRoot, rootpart)
 	weld.Parent = brainrotRoot
 end
 
-function PetSystem.givePet(player: Player, petName, level: number, mutation: string)
+function PetSystem.givePet(player: Player, petName, level: number, mutation: string, noSave: boolean?)
 	local tool = ReplicatedStorage.Assets.TemplateTool:Clone()
 
 	local brainrot = PetSystem.createBrainrot(petName, mutation, tool.Handle)
@@ -56,6 +58,11 @@ function PetSystem.givePet(player: Player, petName, level: number, mutation: str
 
 	tool.Name = petName
 	tool.Parent = player.Backpack
+	if not noSave then
+		local inventory = PlayerDataServerService.get(player, "Inventory")
+		table.insert(inventory, { petName, level, mutation })
+		PlayerDataServerService.set(player, "Inventory", inventory)
+	end
 end
 
 local function customSequence(x: number): number

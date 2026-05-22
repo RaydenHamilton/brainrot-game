@@ -38,8 +38,8 @@ for name, rates in Settings.ZoneRarity do
 			local Position = zoneTiles[spawnTile].TilePart.Position
 
 			local rarity = pickRandom(rates)
-			while not rarity do
-				rarity = pickRandom(rates)
+			if not rarity then
+				continue
 			end
 
 			local brainrots = ServerStorage.Brainrots[rarity]:GetChildren()

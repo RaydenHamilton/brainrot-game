@@ -4,6 +4,14 @@ local PlayerDataServerService =
 
 local setup = {}
 
+local function loadInventory(player)
+	local inventory = PlayerDataServerService.get(player, "Inventory")
+	local Petsystem = require(script.Parent.Petsystem)
+	for _, item in inventory do
+		Petsystem.givePet(player, item[1], item[2], item[3], true)
+	end
+end
+
 setup.Speed = function(player: Player)
 	local char = player.Character or player.CharacterAdded:Wait()
 	local speed = PlayerDataServerService.get(player, "Speed")
@@ -34,6 +42,7 @@ local function setupPlayer(player)
 	end)
 	setup.Carry(player)
 	setup.Power(player)
+	loadInventory(player)
 end
 
 function setup.init()

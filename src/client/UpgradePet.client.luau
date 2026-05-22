@@ -63,3 +63,8 @@ local function getStands()
 end
 task.wait(1)
 getStands()
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local remote = ReplicatedStorage.Remotes.PlayerLoaded
+
+remote:FireServer(plot)
