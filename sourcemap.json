@@ -61,6 +61,13 @@
               ]
             },
             {
+              "name": "Cost",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/shared\\Cost.luau"
+              ]
+            },
+            {
               "name": "NumberShortener",
               "className": "ModuleScript",
               "filePaths": [
@@ -89,6 +96,13 @@
                   "className": "Folder",
                   "children": [
                     {
+                      "name": "PlayerDataClientService",
+                      "className": "ModuleScript",
+                      "filePaths": [
+                        "src/shared\\PlayerDataHandler\\SystemPackage\\PlayerDataClientService.luau"
+                      ]
+                    },
+                    {
                       "name": "PlayerDataServerService",
                       "className": "ModuleScript",
                       "filePaths": [
@@ -104,13 +118,6 @@
               "className": "ModuleScript",
               "filePaths": [
                 "src/shared\\Settings.luau"
-              ]
-            },
-            {
-              "name": "Cost",
-              "className": "ModuleScript",
-              "filePaths": [
-                "src/shared\\Cost.luau"
               ]
             }
           ]
@@ -319,6 +326,13 @@
                   ]
                 },
                 {
+                  "name": "PlayerIsLoaded",
+                  "className": "LocalScript",
+                  "filePaths": [
+                    "src/client\\PlayerIsLoaded.client.luau"
+                  ]
+                },
+                {
                   "name": "UpdradeBase",
                   "className": "LocalScript",
                   "filePaths": [
@@ -330,13 +344,6 @@
                   "className": "LocalScript",
                   "filePaths": [
                     "src/client\\UpgradePet.client.luau"
-                  ]
-                },
-                {
-                  "name": "PlayerIsLoaded",
-                  "className": "LocalScript",
-                  "filePaths": [
-                    "src/client\\PlayerIsLoaded.client.luau"
                   ]
                 }
               ]

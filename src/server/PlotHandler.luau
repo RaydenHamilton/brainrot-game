@@ -3,21 +3,15 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 local AnimateCash = require(ReplicatedStorage.Shared.AnimateCash)
 local BrainrotData = require(ReplicatedStorage.Shared.BrainrotData)
+local Cost = require(ReplicatedStorage.Shared.Cost)
 local NumberShortener = require(ReplicatedStorage.Shared.NumberShortener)
 local Petsystem = require(script.Parent.Petsystem)
 local PlayerDataServerService =
 	require(ReplicatedStorage.Shared.PlayerDataHandler.SystemPackage.PlayerDataServerService)
-local Settings = require(ReplicatedStorage.Shared.Settings)
 
 local Plot = {}
 
 local assets = ReplicatedStorage.Assets.PlotAssets
-
-local function getCashRate(petData): number
-	return math.round(
-		BrainrotData[petData.Name].Cash * BrainrotData.Mutation[petData.Mutation].Multiplier * 1.15 ^ petData.Level
-	)
-end
 
 local function getStandTemplate(child)
 	local standTemplate = child:FindFirstAncestor("Stand")
@@ -67,16 +61,6 @@ local function getPetFromStand(stand: Model): Model?
 		or stand:FindFirstChild("Rainbow") :: Model?
 end
 
-local function getPetUpgradePrice(petData): number
-	local mulitplier = BrainrotData.Mutation[petData.Mutation].Multiplier
-	local baseprice = BrainrotData[petData.Name].Cash
-
-	if petData.Level == 0 then
-		return 0
-	end
-	return math.round(baseprice * mulitplier * 1.28 * 1.25 ^ petData.Level)
-end
-
 local function GetAttributes(pet): {}
 	return {
 		Level = pet:GetAttribute("Level"),
@@ -96,7 +80,7 @@ local function updatalabel(standTemplate: Model)
 
 	local currentLevel = upgradeGui:FindFirstChild("CurrentUpgrade", true)
 	local currentPrice = upgradeGui:FindFirstChild("Price", true)
-	local cost = getPetUpgradePrice(petData)
+	local cost = Cost.getPetUpgradePrice(petData)
 
 	if cost == 0 then
 		currentPrice.Text = `Free!`
@@ -105,7 +89,7 @@ local function updatalabel(standTemplate: Model)
 	end
 	currentLevel.Text = `Lvl {petData.Level} > lvl {petData.Level + 1}`
 
-	pet:FindFirstChild("CashLabel", true).Text = `${NumberShortener.Number(getCashRate(petData))}/s`
+	pet:FindFirstChild("CashLabel", true).Text = `${NumberShortener.Number(Cost.getCashRate(petData))}/s`
 
 	local scale = 0.4 + petData.Level * 0.1
 	if scale > 1.1 then
@@ -173,7 +157,7 @@ local function UpgradePet(player: Player, standTemplate: Model)
 	local petData = GetAttributes(pet)
 	local cash = PlayerDataServerService.get(player, "Cash")
 
-	local cost = getPetUpgradePrice(petData)
+	local cost = Cost.getPetUpgradePrice(petData)
 
 	if cash >= cost then
 		petData.Level += 1
@@ -293,16 +277,13 @@ local function newStand(index, floorFolder)
 		end
 	end)
 end
-local function getBaseUpgradePrice(baselevel)
-	return Settings.Plot.Multiplier ^ (baselevel - Settings.Plot.Offset) * Settings.Plot.Base
-end
 
 local function updateSign(plot, baselevel)
 	local sign = plot:FindFirstChild("BaseUpgrade")
 	local upgradeText = sign:FindFirstChild("CurrentUpgrade", true) :: TextLabel
 	local priceText = sign:FindFirstChild("Price", true)
 	upgradeText.Text = `{baselevel}/50`
-	priceText.Text = `${NumberShortener.Number(getBaseUpgradePrice(baselevel))}`
+	priceText.Text = `${NumberShortener.Number(Cost.getBaseUpgradePrice(baselevel))}`
 end
 
 local function updatePlot(plot, baseSkin, baselevel)
@@ -335,7 +316,7 @@ local function upgradeBase(player: Player, plotChild)
 	local plot = plotChild:FindFirstAncestor("PlotTemplate")
 	local baselevel = PlayerDataServerService.get(player, "BaseLevel")
 	local baseSkin = PlayerDataServerService.get(player, "BaseSkin")
-	local cost = getBaseUpgradePrice(baselevel)
+	local cost = Cost.getBaseUpgradePrice(baselevel)
 	local playerCash = PlayerDataServerService.get(player, "Cash")
 	if cost > playerCash then
 		return { message = "not enough money" }
@@ -458,8 +439,7 @@ local function updateCash()
 							end
 							local petData = GetAttributes(pet)
 							local cash = stand.CashModel.TouchPart:GetAttribute("Cash") or 0
-							local newCash = cash + getCashRate(petData)
-
+							local newCash = cash + Cost.getCashRate(petData)
 							local touchPart = stand.CashModel.TouchPart
 
 							task.spawn(function()
@@ -475,7 +455,7 @@ local function updateCash()
 end
 
 function Plot.init()
-	for index, plot in Workspace.PlotSpawns:GetChildren() do
+	for _, plot in Workspace.PlotSpawns:GetChildren() do
 		Plot.rest(nil, plot.Name)
 	end
 	for _, player in Players:GetChildren() do

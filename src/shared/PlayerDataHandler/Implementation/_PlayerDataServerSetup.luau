@@ -1,6 +1,8 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local PlayerDataClientService =
+	require(ReplicatedStorage.Shared.PlayerDataHandler.SystemPackage.PlayerDataClientService)
 local PlayerDataServerService =
 	require(ReplicatedStorage.Shared.PlayerDataHandler.SystemPackage.PlayerDataServerService)
 
@@ -27,6 +29,7 @@ local profileTemplate = {
 
 function playerDataServerSetup.init()
 	PlayerDataServerService.init(profileTemplate)
+	PlayerDataClientService.init()
 
 	Players.PlayerAdded:Connect(PlayerDataServerService.playerAdded)
 	Players.PlayerRemoving:Connect(PlayerDataServerService.playerRemoving)
