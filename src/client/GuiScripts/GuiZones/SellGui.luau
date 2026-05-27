@@ -32,7 +32,7 @@ function sell.init()
 	local function sellAll()
 		clear()
 		sellServer("All")
-		sellInventory.SellValueLabel.Text = `Inventory Value: ${0}`
+		sellInventory.SellValueLabel.Text = `${0}`
 	end
 
 	local function loadShop()
@@ -61,7 +61,7 @@ function sell.init()
 					itemFrame.SellValueLabel.Text = `{petData.Name}x{totalPets} Value: ${cost * totalPets}`
 					total -= cost
 
-					sellInventory.SellValueLabel.Text = `Inventory Value: {NumberShortener.Number(total)}`
+					sellInventory.SellValueLabel.Text = `{NumberShortener.Number(total)}`
 					if totalPets < 1 then
 						itemFrame:Destroy()
 					end
@@ -74,11 +74,11 @@ function sell.init()
 
 			total += cost
 		end
-		sellInventory.SellValueLabel.Text = `Inventory Value: ${NumberShortener.Number(total)}`
+		sellInventory.SellValueLabel.Text = `${NumberShortener.Number(total)}`
 		sellInventory.SellAll.Activated:Connect(sellAll)
 	end
 
-	sellFrame.AttributeChanged:Connect(loadShop)
+	sellFrame.Changed:Connect(loadShop)
 end
 
 return sell

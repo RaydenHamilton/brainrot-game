@@ -183,6 +183,13 @@
               "filePaths": [
                 "src/server\\TileHealth.luau"
               ]
+            },
+            {
+              "name": "SellPet",
+              "className": "Script",
+              "filePaths": [
+                "src/server\\SellPet.server.luau"
+              ]
             }
           ]
         }
