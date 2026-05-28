@@ -5,6 +5,7 @@ local Workspace = game:GetService("Workspace")
 local BrainrotData = require(ReplicatedStorage.Shared.BrainrotData)
 local Petsystem = require(script.Parent.Petsystem)
 local Settings = require(ReplicatedStorage.Shared.Settings)
+local randomPet = require(ReplicatedStorage.Shared.randomPet)
 local tiles = Workspace.Tiles
 
 local function pickRandom(tbl)
@@ -42,10 +43,8 @@ for name, rates in Settings.ZoneRarity do
 				continue
 			end
 
-			local brainrots = ServerStorage.Brainrots[rarity]:GetChildren()
-			local index = math.random(1, #brainrots)
-			local petName = brainrots[index].Name
-			local mutation = pickRandom(BrainrotData.MutationChance)
+			local petName = randomPet.randomBrainRot(rarity)
+			local mutation = randomPet.randomMutation()
 			local brainrot = Petsystem.createBrainrot(petName, mutation, Workspace.EntitiesFolder)
 			brainrot:ScaleTo(1)
 			brainrot:PivotTo(
@@ -67,7 +66,7 @@ for name, rates in Settings.ZoneRarity do
 				local char = player.Character or player.CharacterAdded:Wait()
 				local charrying = char:GetAttribute("Carrying")
 				local charryLimit = player:GetAttribute("Carry")
-				if charrying + 1 < charryLimit then
+				if charrying < charryLimit then
 					char:SetAttribute("Carrying", charrying + 1)
 					Petsystem.pickupPet(player, petName, 0, mutation)
 					brainrot:Destroy()

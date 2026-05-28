@@ -119,6 +119,13 @@
               "filePaths": [
                 "src/shared\\Settings.luau"
               ]
+            },
+            {
+              "name": "randomPet",
+              "className": "ModuleScript",
+              "filePaths": [
+                "src/shared\\randomPet.luau"
+              ]
             }
           ]
         }
@@ -171,6 +178,13 @@
               ]
             },
             {
+              "name": "SellPet",
+              "className": "Script",
+              "filePaths": [
+                "src/server\\SellPet.server.luau"
+              ]
+            },
+            {
               "name": "SetupPlayer",
               "className": "ModuleScript",
               "filePaths": [
@@ -185,10 +199,10 @@
               ]
             },
             {
-              "name": "SellPet",
+              "name": "FuseHanlder",
               "className": "Script",
               "filePaths": [
-                "src/server\\SellPet.server.luau"
+                "src/server\\FuseHanlder.server.luau"
               ]
             }
           ]

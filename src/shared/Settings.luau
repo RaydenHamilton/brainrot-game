@@ -91,4 +91,13 @@ Settings.Carry = {
 
 Settings.Plot = { Base = 1000, Multiplier = 4, Offset = 10 }
 
+Settings.FuseTime = {
+	Rare = 1 * 60, 
+	Epic = 1 * 60,
+	Legendary = 1 * 60,
+	Mythic = 1 * 60,
+	God = 1 * 60,
+	Secret = 1 * 60,
+}
+
 return Settings

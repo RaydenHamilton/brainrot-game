@@ -25,6 +25,7 @@ local profileTemplate = {
 	Tools = {},
 	EquppedTool = "base",
 	Points = 0,
+	FuseMachine = { Slots = {}, StartTime = nil, ClaimableRarity = nil },
 }
 
 function playerDataServerSetup.init()
